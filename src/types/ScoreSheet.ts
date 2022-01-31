@@ -18,7 +18,7 @@ type SpareFrame = {
 
 type RegularFrame = {
   state: FrameState.REGULAR,
-  scores: [number, number],
+  scores: [] | [number] | [number, number],
   bonusScores: [],
 }
 
