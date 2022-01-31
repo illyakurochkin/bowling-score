@@ -26,7 +26,6 @@ const Frame = ({orderNumber, frame: {state, total, scores, bonusScores}}: FrameP
       </div>
 
       <div className={styles.scoresList}>
-        {!scores.length && '...'}
         {renderScores()}
         {renderBonusScores()}
       </div>
