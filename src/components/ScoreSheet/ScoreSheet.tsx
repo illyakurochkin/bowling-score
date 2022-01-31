@@ -17,7 +17,7 @@ const ScoreSheet = ({scoreSheet: {frames, total}}: ScoreSheetProps) => {
       <h2>{`Total: ${total}`}</h2>
       {renderFrames()}
     </div>
-  );
-};
+  )
+}
 
-export default ScoreSheet;
+export default ScoreSheet

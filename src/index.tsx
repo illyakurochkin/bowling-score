@@ -10,4 +10,4 @@ ReactDOM.render(
     </ScoreSheetProvider>
   </React.StrictMode>,
   document.getElementById('root')
-);
+)

@@ -25,7 +25,7 @@ const ScoreInput = ({value, onChange}: ScoreInputProps) => {
         className={styles.input}
       />
     </div>
-  );
-};
+  )
+}
 
-export default ScoreInput;
+export default ScoreInput

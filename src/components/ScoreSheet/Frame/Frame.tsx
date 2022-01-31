@@ -31,7 +31,7 @@ const Frame = ({orderNumber, frame: {state, total, scores, bonusScores}}: FrameP
         {renderBonusScores()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Frame;
+export default Frame

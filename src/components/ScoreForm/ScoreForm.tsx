@@ -34,7 +34,7 @@ const ScoreForm = ({onSubmit}: ScoreFormProps) => {
       <ScoreInput value={score} onChange={setScore}/>
       <button type="submit" className={styles.submit}>Submit</button>
     </form>
-  );
-};
+  )
+}
 
-export default ScoreForm;
+export default ScoreForm

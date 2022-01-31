@@ -19,7 +19,7 @@ const BowlingScoreApp = () => {
         <ScoreSheet scoreSheet={scoreSheet}/>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BowlingScoreApp;
+export default BowlingScoreApp
