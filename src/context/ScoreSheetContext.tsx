@@ -8,7 +8,7 @@ import {
   useContext,
   useState,
 } from 'react'
-import ScoreSheet from '../types/ScoreSheet'
+import ScoreSheet, {FrameState} from '../types/ScoreSheet'
 import {mapScoresToScoreSheet} from './helpers'
 import {MAX_SCORE, TOTAL_FRAMES} from './constants'
 
@@ -44,8 +44,8 @@ const useCanAddScore = () => {
   const {frames} = useScoreSheet()
 
   return !frames[TOTAL_FRAMES - 1] || (
-    frames[TOTAL_FRAMES - 1].state === 'strike' && frames[TOTAL_FRAMES - 1].bonusScores.length !== 2 ||
-    frames[TOTAL_FRAMES - 1].state === 'spare' && frames[TOTAL_FRAMES - 1].bonusScores.length !== 1 ||
+    frames[TOTAL_FRAMES - 1].state === FrameState.STRIKE && frames[TOTAL_FRAMES - 1].bonusScores.length !== 2 ||
+    frames[TOTAL_FRAMES - 1].state === FrameState.SPARE && frames[TOTAL_FRAMES - 1].bonusScores.length !== 1 ||
     frames[TOTAL_FRAMES - 1].scores.length + frames[TOTAL_FRAMES - 1].bonusScores.length < 2
   )
 }
@@ -60,14 +60,14 @@ const useAddScore = () => {
       throw new Error('too many scores')
     }
 
-    const lastFrame = scoreSheet.frames[scoreSheet.frames.length - 1]
+    const previousFrame = scoreSheet.frames[scoreSheet.frames.length - 1]
 
     if (
-      lastFrame &&
+      previousFrame &&
       scoreSheet.frames.length !== TOTAL_FRAMES &&
-      !isFinite(lastFrame.scores[1]!) &&
-      lastFrame.scores[0] !== MAX_SCORE &&
-      lastFrame.scores[0] + score > MAX_SCORE
+      previousFrame.scores.length === 1 &&
+      previousFrame.state !== FrameState.STRIKE &&
+      previousFrame.scores[0] + score > MAX_SCORE
     ) {
       throw new Error('incorrect score sum')
     }

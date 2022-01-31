@@ -6,19 +6,19 @@ const sum = (array: number[]): number => (
 )
 
 const groupScoresByFrames = (scores: number[]): number[][] => (
-  scores.reduce((accumulator: number[][], score, index) => {
+  scores.reduce((accumulator: number[][], score) => {
     const lastFrame = accumulator[accumulator.length - 1]
 
     const shouldCreateNewFrame = accumulator.length !== TOTAL_FRAMES && (
-      !lastFrame || lastFrame[0] === MAX_SCORE || isFinite(lastFrame[1])
+      !lastFrame || lastFrame.length === 2 || lastFrame[0] === MAX_SCORE
     )
 
     if (shouldCreateNewFrame) {
       return [...accumulator, [score]]
     }
 
-    return accumulator.map((frame, frameIndex) => (
-      frameIndex === accumulator.length - 1 ? [...frame, score] : frame
+    return accumulator.map((frame, index) => (
+      index === accumulator.length - 1 ? [...frame, score] : frame
     ))
   }, [])
 )
@@ -29,32 +29,22 @@ export const mapScoresToScoreSheet = (scores: number[]): ScoreSheet => {
   const scoreSheetFrames = frames.map((scores, index) => {
     const isStrike = scores[0] === MAX_SCORE
 
-    if(isStrike && index === TOTAL_FRAMES - 1) {
-      const [, ...bonusScores] = scores
-      return {state: FrameState.STRIKE, scores: [MAX_SCORE], bonusScores}
-    }
-
-    if (isStrike) {
-      const bonusScores = [
+    if(isStrike) {
+      const bonusScores = index === TOTAL_FRAMES - 1 ? scores.slice(1) : [
         frames[index + 1]?.[0],
         frames[index + 1]?.[1] || frames[index + 2]?.[0],
-      ].filter(isFinite) as number[]
+      ].filter(isFinite)
 
-      return {state: FrameState.STRIKE, scores, bonusScores}
+      return {state: FrameState.STRIKE, scores: [MAX_SCORE], bonusScores}
     }
 
     const isSpare = scores[0] + scores[1] === MAX_SCORE
 
-    if(isSpare && index === TOTAL_FRAMES - 1) {
-      const [first, second, ...bonusScores] = scores
-      return {state: FrameState.SPARE, scores: [first, second], bonusScores}
-    }
+    if(isSpare) {
+      const bonusScores = index === TOTAL_FRAMES - 1 ? scores.slice(2) :
+        [frames[index + 1]?.[0]].filter(isFinite)
 
-    if (isSpare) {
-      const bonusScores = [frames[index + 1]?.[0] || null]
-        .filter((score) => score !== null) as number[]
-
-      return {state: FrameState.SPARE, scores, bonusScores}
+      return {state: FrameState.SPARE, scores: scores.slice(0, 2), bonusScores}
     }
 
     return {state: FrameState.REGULAR, scores, bonusScores: []}
@@ -62,6 +52,6 @@ export const mapScoresToScoreSheet = (scores: number[]): ScoreSheet => {
 
   return {
     frames: scoreSheetFrames as Frame[],
-    total: sum(scoreSheetFrames.map(({total}) => total))
+    total: sum(scoreSheetFrames.map(({total}) => total)),
   }
 }

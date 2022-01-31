@@ -1,5 +1,5 @@
-import React from 'react';
-import {Frame as FrameType, FrameState} from '../../../types/ScoreSheet';
+import React from 'react'
+import {Frame as FrameType, FrameState} from '../../../types/ScoreSheet'
 import styles from './Frame.module.scss'
 
 interface FrameProps {
