@@ -1,0 +1,16 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .title {
+    padding-bottom: 10px;
+  }
+
+  .submit {
+    align-self: flex-start;
+
+    margin-top: 10px;
+    padding: 0 10px;
+  }
+}
